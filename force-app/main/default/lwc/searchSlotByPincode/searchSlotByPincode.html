@@ -1,0 +1,77 @@
+<template>
+    <lightning-card>
+        <div class="slds-var-m-around_medium">
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <div class="slds-box enter_detail_page">
+                        <lightning-card title="Enter below details">
+                            <div class="enter_detail_page">
+                                <lightning-input type="text" placeholder="Pincode" onchange={pincodeHandler}>
+                                </lightning-input>
+                                <lightning-input type="date" placeholder="Choose Date" onchange={dateHandler}>
+                                </lightning-input></br>
+                                <lightning-button variant="success" label="Find" onclick={clickHandler}></lightning-button>
+                            </div>
+                        </lightning-card>
+                    </div>
+                </lightning-layout-item>
+
+                <template if:true={showSlots}>
+                    <lightning-layout-item size="6">
+                    <div class="slds-box outerbox_backGround">
+                        <!-- Details of institute 1 -->
+                        <template for:each={centers} for:item="center">
+                            <div class="slds-grid slds-wrap slds-box center_all_detail_background" key={center.center_id}>
+                                <div class="slds-col slds-size_3-of-12 slds-box center_address_background">
+                                    <p><strong>{center.name}</strong></p>
+                                    <p>{center.address}, {center.district_name}, {center.state_name}, {center.pincode}
+                                    </p>
+                                    <p>Fee type: {center.fee_type}</p>
+                                    <template for:each={center.vaccine_fees} for:item="vaccine">
+                                        <div key={vaccine.id}>
+                                            <p>{vaccine.vaccine}</p>
+                                            <p>Price: &#8377;{vaccine.fee}</p>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_9-of-12 vaccine">
+                                    <!-- displays number of available doses for each type of Vaccine age 45 above -->
+                                    <div class="slds-grid slds-wrap">
+                                        <template for:each={center.sessions} for:item="session">
+                                            <!-- covishield -->
+                                            <div class="slds-col slds-size_4-of-12 slds-box vaccine_detail" key={session.session_id}>
+                                                <p><strong>{session.date}</strong></p>
+                                                <p><strong>{session.vaccine}</strong></p>
+                                                <p>Minimum Age:{session.min_age_limit} years</p>
+                                                <p>Maximum Age:{session.max_age_limit} years</p>
+                                                <p>Vaccine for all age:{session.allow_all_age}</p>
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-col slds-size_6-of-12 slds-box dose_detail">
+                                                        <p><strong>Dose 1</strong></p>
+                                                        <p>{session.available_capacity_dose1}</p>
+                                                    </div>
+                                                    <div class="slds-col slds-size_6-of-12 slds-box dose_detail">
+                                                        <p><strong>Dose 2</strong></p>
+                                                        <p>{session.available_capacity_dose2}</p>
+                                                    </div>
+                                                </div>
+                                                <p><strong>Slots:</strong></p>
+                                                <template for:each={session.slots} for:item="slots">
+                                                    <div key={slots.id}>
+                                                        <p>{slots}</p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                                </br>
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+</template>
